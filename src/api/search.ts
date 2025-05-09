@@ -20,6 +20,7 @@ export const searchCars = async (query: string): Promise<CarListing[]> => {
   try {
     // Check if Supabase is configured
     if (isSupabaseConfigured()) {
+      console.log('Using Supabase for search');
       const sanitizedQuery = query.toLowerCase().trim();
       
       const { data, error } = await supabase
@@ -33,6 +34,7 @@ export const searchCars = async (query: string): Promise<CarListing[]> => {
         throw error;
       }
       
+      console.log('Supabase returned data:', data);
       return data as CarListing[] || [];
     }
     

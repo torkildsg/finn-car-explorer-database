@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Loader2, Search, Car } from "lucide-react";
 import { searchCars, CarListing } from "@/api/search";
+import { isSupabaseConfigured } from "@/lib/supabase";
 
 const CarSearch = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -13,6 +15,18 @@ const CarSearch = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [initialLoad, setInitialLoad] = useState(true);
   const { toast } = useToast();
+  const [connectionStatus, setConnectionStatus] = useState<string>('');
+
+  // Check Supabase connection on component mount
+  useEffect(() => {
+    const checkConnection = async () => {
+      const configured = isSupabaseConfigured();
+      setConnectionStatus(configured ? 'Connected to Supabase' : 'Using mock data (Supabase not configured)');
+      console.log('Supabase connection status:', configured);
+    };
+    
+    checkConnection();
+  }, []);
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) {
@@ -28,8 +42,10 @@ const CarSearch = () => {
     setInitialLoad(false);
 
     try {
+      console.log('Searching for:', searchQuery);
       // Use our API function with proper error handling
       const data = await searchCars(searchQuery);
+      console.log('Search results:', data);
       setSearchResults(data);
       
       if (data.length === 0) {
@@ -73,6 +89,12 @@ const CarSearch = () => {
         <p className="text-gray-500 text-center max-w-lg mb-6">
           Search through Finn.no's car database to find your next vehicle. Enter a brand or model to get started.
         </p>
+        
+        {connectionStatus && (
+          <div className="text-sm mb-4 bg-blue-50 text-blue-700 px-3 py-1 rounded-full">
+            {connectionStatus}
+          </div>
+        )}
       
         <div className="flex w-full max-w-lg gap-2">
           <Input
