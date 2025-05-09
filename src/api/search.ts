@@ -1,5 +1,5 @@
 
-import { supabase } from '@/lib/supabase';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 
 export interface CarListing {
   finn_id: string;
@@ -18,8 +18,8 @@ export interface CarListing {
  */
 export const searchCars = async (query: string): Promise<CarListing[]> => {
   try {
-    // If Supabase is properly connected and has data
-    if (supabase) {
+    // Check if Supabase is configured
+    if (isSupabaseConfigured()) {
       const sanitizedQuery = query.toLowerCase().trim();
       
       const { data, error } = await supabase
@@ -33,11 +33,11 @@ export const searchCars = async (query: string): Promise<CarListing[]> => {
         throw error;
       }
       
-      return data as CarListing[];
+      return data as CarListing[] || [];
     }
     
     // Fallback to mock data if Supabase isn't available
-    console.log('Supabase not configured, using mock data');
+    console.log('Supabase not configured properly, using mock data');
     return getMockData(query);
   } catch (error) {
     console.error('Search error:', error);
