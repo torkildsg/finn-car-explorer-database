@@ -1,0 +1,27 @@
+
+{
+  "data": [
+    {
+      "finn_id": "406967386",
+      "title": "Audi A3 Sportback e-tron",
+      "brand": "Audi",
+      "model": "A3",
+      "year": "2018",
+      "price": "289,000 kr",
+      "location": "Oslo",
+      "url": "https://www.finn.no/mobility/item/406967386",
+      "image_url": "https://images.finncdn.no/dynamic/1600w/2023/11/vertical-0/26/4/267/354/47_1395823842.jpg"
+    },
+    {
+      "finn_id": "406915143",
+      "title": "Audi A3 Sportback TFSI e",
+      "brand": "Audi",
+      "model": "A3",
+      "year": "2022",
+      "price": "399,000 kr",
+      "location": "Bergen",
+      "url": "https://www.finn.no/mobility/item/406915143",
+      "image_url": "https://images.finncdn.no/dynamic/1600w/2023/11/vertical-0/25/0/265/081/85_1208593260.jpg"
+    }
+  ]
+}

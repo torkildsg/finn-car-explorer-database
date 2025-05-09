@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,19 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				// Finn.no inspired colors
+				'finn-blue': {
+					100: '#e6f0ff',
+					200: '#cce0ff',
+					300: '#99c0ff',
+					400: '#66a0ff',
+					500: '#0063fb', // Finn blue
+					600: '#0057e2',
+					700: '#0046b8',
+					800: '#00348a',
+					900: '#00225c',
+				},
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
