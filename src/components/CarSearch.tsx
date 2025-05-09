@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -6,18 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
 import { Loader2, Search, Car } from "lucide-react";
-
-interface CarListing {
-  finn_id: string;
-  title: string;
-  brand: string;
-  model: string;
-  year: string;
-  price: string;
-  location: string;
-  url: string;
-  image_url: string | null;
-}
+import { searchCars, CarListing } from "@/api/search";
 
 const CarSearch = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -40,15 +28,8 @@ const CarSearch = () => {
     setInitialLoad(false);
 
     try {
-      // In a production environment, this would call a real API endpoint
-      // For demo purposes, we'll simulate an API call with sample data
-      const response = await fetch(`/api/search?query=${encodeURIComponent(searchQuery)}`);
-      
-      if (!response.ok) {
-        throw new Error("Failed to search for cars");
-      }
-      
-      const data = await response.json();
+      // Use our API function with proper error handling
+      const data = await searchCars(searchQuery);
       setSearchResults(data);
       
       if (data.length === 0) {
@@ -71,42 +52,9 @@ const CarSearch = () => {
         description: "Failed to search for cars. Please try again later.",
         variant: "destructive"
       });
-      
-      // For demo purposes, let's show some sample results
-      generateSampleResults();
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const generateSampleResults = () => {
-    // Generate sample results for demo purposes
-    const sampleData: CarListing[] = [
-      {
-        finn_id: "406967386",
-        title: "Audi A3 Sportback e-tron",
-        brand: "Audi",
-        model: "A3",
-        year: "2018",
-        price: "289,000 kr",
-        location: "Oslo",
-        url: "https://www.finn.no/mobility/item/406967386",
-        image_url: "https://images.finncdn.no/dynamic/1600w/2023/11/vertical-0/26/4/267/354/47_1395823842.jpg"
-      },
-      {
-        finn_id: "406915143",
-        title: "Audi A3 Sportback TFSI e",
-        brand: "Audi",
-        model: "A3",
-        year: "2022",
-        price: "399,000 kr",
-        location: "Bergen",
-        url: "https://www.finn.no/mobility/item/406915143",
-        image_url: "https://images.finncdn.no/dynamic/1600w/2023/11/vertical-0/25/0/265/081/85_1208593260.jpg"
-      }
-    ];
-    
-    setSearchResults(sampleData);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
