@@ -1,5 +1,5 @@
 
-import { supabase, isSupabaseConfigured } from '@/lib/supabase';
+import { supabase, isSupabaseConfigured, getSupabase } from '@/lib/supabase';
 
 export interface CarListing {
   finn_id: string;
@@ -21,9 +21,16 @@ export const searchCars = async (query: string): Promise<CarListing[]> => {
     // Check if Supabase is configured
     if (isSupabaseConfigured()) {
       console.log('Using Supabase for search');
+      const client = getSupabase();
+      
+      if (!client) {
+        console.warn('Supabase client not available, falling back to mock data');
+        return getMockData(query);
+      }
+      
       const sanitizedQuery = query.toLowerCase().trim();
       
-      const { data, error } = await supabase
+      const { data, error } = await client
         .from('cars')
         .select('*')
         .or(`brand.ilike.%${sanitizedQuery}%,model.ilike.%${sanitizedQuery}%,title.ilike.%${sanitizedQuery}%`)

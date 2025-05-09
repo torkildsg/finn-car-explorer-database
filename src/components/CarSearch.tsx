@@ -20,9 +20,14 @@ const CarSearch = () => {
   // Check Supabase connection on component mount
   useEffect(() => {
     const checkConnection = async () => {
-      const configured = isSupabaseConfigured();
-      setConnectionStatus(configured ? 'Connected to Supabase' : 'Using mock data (Supabase not configured)');
-      console.log('Supabase connection status:', configured);
+      try {
+        const configured = isSupabaseConfigured();
+        setConnectionStatus(configured ? 'Connected to Supabase' : 'Using mock data (Supabase not configured)');
+        console.log('Supabase connection status:', configured);
+      } catch (error) {
+        console.error('Error checking Supabase connection:', error);
+        setConnectionStatus('Error connecting to Supabase, using mock data');
+      }
     };
     
     checkConnection();
